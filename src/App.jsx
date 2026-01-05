@@ -49,10 +49,8 @@ function App() {
       <main className="flex-1 ml-0 md:ml-64 h-full relative flex flex-col transition-all duration-200">
         <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
             {/* Left Panel: Ingest & Settings */}
-            <div className="w-full md:w-1/3 border-r border-white/5 bg-[#0b1120] p-4 overflow-y-auto">
-                 <div className="mb-6 h-full">
-                    <Ingest session={session} />
-                 </div>
+            <div className="w-full md:w-1/3 border-r border-white/5 bg-[#0b1120] p-4 flex flex-col overflow-hidden">
+                <Ingest session={session} />
             </div>
 
             {/* Right Panel: Chat Interface */}

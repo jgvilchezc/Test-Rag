@@ -126,8 +126,8 @@ export default function Ingest({ session }) {
   };
 
   return (
-    <div className="glass-panel p-6 flex flex-col gap-4 h-full relative">
-      <div className="flex items-center justify-between">
+    <div className="glass-panel p-6 flex flex-col gap-4 h-full relative overflow-hidden">
+      <div className="flex items-center justify-between shrink-0">
         <h2 className="text-xl flex items-center gap-2 text-primary">
           <Upload size={20} /> Knowledge Ingestion
         </h2>
@@ -143,8 +143,8 @@ export default function Ingest({ session }) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 flex-1">
-        <div>
+      <div className="flex flex-col gap-4 flex-1 overflow-y-auto min-h-0 pb-4">
+        <div className="shrink-0">
           <label className="text-sm text-muted mb-2 block">Document Title</label>
           <div className="relative">
             <FileText className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={18} />
@@ -158,11 +158,11 @@ export default function Ingest({ session }) {
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col gap-4">
+        <div className="flex flex-col gap-4 flex-1 min-h-0">
            {/* File Drop Zone */}
            <div 
-             className={`border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center text-center transition-all cursor-pointer relative
-                ${selectedFile ? 'border-primary bg-primary/5 flex-1' : 'border-glass hover:border-primary/50 hover:bg-white/5'}
+             className={`border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center text-center transition-all cursor-pointer relative min-h-[200px]
+                ${selectedFile ? 'border-primary bg-primary/5' : 'border-glass hover:border-primary/50 hover:bg-white/5'}
              `}
              onClick={() => fileInputRef.current?.click()}
              onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-primary'); }}
@@ -207,15 +207,15 @@ export default function Ingest({ session }) {
            {/* OR Separator & Text Input - Only show if no file selected */ }
            {!selectedFile && (
                <>
-                <div className="relative flex items-center gap-4">
+                <div className="relative flex items-center gap-4 shrink-0">
                     <div className="h-px bg-glass flex-1"></div>
                     <span className="text-xs text-muted font-medium uppercase">OR PASTE TEXT</span>
                     <div className="h-px bg-glass flex-1"></div>
                 </div>
 
-                <div className="flex-1 flex flex-col min-h-[150px]">
+                <div className="flex flex-col min-h-[150px]">
                     <textarea 
-                        className="input-field flex-1 p-4" 
+                        className="input-field flex-1 p-4 resize-none" 
                         placeholder="Directly paste text content here..."
                         value={formData.content}
                         onChange={e => {
@@ -228,20 +228,20 @@ export default function Ingest({ session }) {
         </div>
 
         {status === 'error' && (
-          <div className="alert-error">
+          <div className="alert-error shrink-0">
             <AlertCircle size={16} /> {message}
           </div>
         )}
 
         {status === 'success' && (
-           <div className="alert-success">
+           <div className="alert-success shrink-0">
              <Check size={16} /> {message}
            </div>
         )}
 
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2 shrink-0">
            <button 
-             className="btn btn-primary flex-1 justify-center"
+             className="btn btn-primary flex-1 flex items-center justify-center gap-2 py-3"
              onClick={handleIngest}
              disabled={loading || (!formData.content && !selectedFile)}
            >
