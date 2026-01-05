@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Upload, Check, AlertCircle, Loader2, FileText, Library, X, Trash2 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 export default function Ingest({ session }) {
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ export default function Ingest({ session }) {
   const fetchDocuments = async () => {
     setLoadingDocs(true);
     try {
-      const res = await fetch('http://127.0.0.1:8001/documents', {
+      const res = await fetch(`${API_BASE_URL}/documents`, {
         headers: {
             'Authorization': `Bearer ${session?.access_token}`
         }
@@ -83,7 +84,7 @@ export default function Ingest({ session }) {
           const uploadData = new FormData();
           uploadData.append('file', selectedFile);
           
-          res = await fetch('http://127.0.0.1:8001/ingest-file', {
+          res = await fetch(`${API_BASE_URL}/ingest-file`, {
               method: 'POST',
               headers: headers, // FormData automatically sets Content-Type to multipart
               body: uploadData
@@ -91,7 +92,7 @@ export default function Ingest({ session }) {
 
       } else {
           // Text Ingestion logic
-          res = await fetch('http://127.0.0.1:8001/ingest-text', {
+          res = await fetch(`${API_BASE_URL}/ingest-text`, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader2, Sparkles, Cpu, ChevronDown } from 'lucide-react';
 import ChatViewFormatter from './ChatViewFormatter';
+import { API_BASE_URL } from '../config';
 
 export default function Chat({ session, currentSessionId, setCurrentSessionId }) {
   const [messages, setMessages] = useState([]);
@@ -27,7 +28,7 @@ export default function Chat({ session, currentSessionId, setCurrentSessionId })
     if (!sessionId) return;
     setLoading(true);
     try {
-        const res = await fetch(`http://127.0.0.1:8001/chat/sessions/${sessionId}/messages`, {
+        const res = await fetch(`${API_BASE_URL}/chat/sessions/${sessionId}/messages`, {
             headers: { 'Authorization': `Bearer ${session.access_token}` }
         });
         if (res.ok) {
@@ -80,7 +81,7 @@ export default function Chat({ session, currentSessionId, setCurrentSessionId })
     setLoading(true);
 
     try {
-      const res = await fetch('http://127.0.0.1:8001/chat', {
+      const res = await fetch(`${API_BASE_URL}/chat`, {
         method: 'POST',
         headers: { 
             'Content-Type': 'application/json',

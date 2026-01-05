@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { LogOut, User, MessageSquare, PlusCircle, Menu, X, Database } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 export default function Sidebar({ session, currentSessionId, setCurrentSessionId }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -17,7 +18,7 @@ export default function Sidebar({ session, currentSessionId, setCurrentSessionId
       try {
           if (!session?.access_token) return;
           
-          const res = await fetch('http://127.0.0.1:8001/chat/sessions', {
+          const res = await fetch(`${API_BASE_URL}/chat/sessions`, {
              headers: {
                  'Authorization': `Bearer ${session.access_token}`
              }
