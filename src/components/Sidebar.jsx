@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { LogOut, User, MessageSquare, PlusCircle, Menu, X, Database } from 'lucide-react';
+import { LogOut, User, MessageSquare, PlusCircle, Menu, X, Database, Key } from 'lucide-react';
 import { API_BASE_URL } from '../config';
+import ApiKeyModal from './ApiKeyModal';
 
 export default function Sidebar({ session, currentSessionId, setCurrentSessionId }) {
   const [isOpen, setIsOpen] = useState(true);
+  const [showApiKeys, setShowApiKeys] = useState(false);
   const [chatSessions, setChatSessions] = useState([]);
 
   // Fetch sessions on mount
@@ -120,6 +122,14 @@ export default function Sidebar({ session, currentSessionId, setCurrentSessionId
             )}
             
             <button 
+                onClick={() => setShowApiKeys(true)}
+                className="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors mb-1"
+            >
+                <Key size={18} />
+                API Keys
+            </button>
+
+            <button 
                 onClick={handleLogout}
                 className="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-900/10 rounded-lg transition-colors"
             >
@@ -128,6 +138,12 @@ export default function Sidebar({ session, currentSessionId, setCurrentSessionId
             </button>
         </div>
       </div>
+
+      <ApiKeyModal 
+        isOpen={showApiKeys} 
+        onClose={() => setShowApiKeys(false)} 
+        session={session} 
+      />
     </>
   );
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Upload, Check, AlertCircle, Loader2, FileText, Library, X, Trash2 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
+import FilePreviewModal from './FilePreviewModal';
 
 export default function Ingest({ session }) {
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,9 @@ export default function Ingest({ session }) {
   const [documents, setDocuments] = useState([]);
   const [loadingDocs, setLoadingDocs] = useState(false);
   const scrollRef = useRef(null);
+  
+  // Preview State
+  const [previewDocId, setPreviewDocId] = useState(null);
 
   useEffect(() => {
     if (showModal) {
@@ -306,7 +310,15 @@ export default function Ingest({ session }) {
                     ) : (
                         <div className="flex flex-col gap-3">
                             {documents.map((doc) => (
-                                <div key={doc.id} className="p-4 bg-white/5 hover:bg-white/10 border border-glass rounded-xl flex justify-between items-center group transition-all cursor-pointer">
+                                <div 
+                                    key={doc.id} 
+                                    onClick={() => {
+                                        setPreviewDocId(doc.id);
+                                        setShowModal(false);
+                                    }}
+                                    className="p-4 bg-white/5 hover:bg-white/10 border border-glass rounded-xl flex justify-between items-center group transition-all cursor-pointer"
+                                    title="Click to preview"
+                                >
                                     <div className="flex items-center gap-4 overflow-hidden">
                                         <div className="w-10 h-10 flex items-center justify-center bg-primary/20 rounded-lg text-primary shrink-0 shadow-inner">
                                             <FileText size={20} />
@@ -340,6 +352,14 @@ export default function Ingest({ session }) {
         </div>,
         document.body
       )}
+
+      {/* Preview Modal */}
+      <FilePreviewModal 
+        isOpen={!!previewDocId} 
+        onClose={() => setPreviewDocId(null)} 
+        documentId={previewDocId} 
+        session={session} 
+      />
     </div>
   );
 }
